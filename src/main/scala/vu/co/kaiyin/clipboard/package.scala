@@ -1,12 +1,13 @@
-package vu.co.kaiyin.clipboard
+package vu.co.kaiyin
 
 import java.awt.Toolkit
 import java.awt.datatransfer.{StringSelection, DataFlavor, Clipboard}
 
+
 /**
  * Created by IDEA on 31/10/15.
  */
-trait SysClip {
+package object clipboard {
   val clipboard = sysClipboard
 
   private def sysClipboard: Clipboard = {
@@ -32,5 +33,4 @@ trait SysClip {
     f(s).foreach(putString(_))
   }
 }
-
 

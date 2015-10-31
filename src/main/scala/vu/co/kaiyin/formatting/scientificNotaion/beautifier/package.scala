@@ -1,6 +1,7 @@
 package vu.co.kaiyin.formatting.scientificNotaion
 
-import vu.co.kaiyin.clipboard.SysClip
+import vu.co.kaiyin.clipboard
+
 
 /**
  * Created by IDEA on 31/10/15.
@@ -8,6 +9,19 @@ import vu.co.kaiyin.clipboard.SysClip
 package object beautifier {
 
   private val scientificPattern = """([+-]?\d+(\.\d+)?)[Ee]([+-]?\d+)""".r
+
+//  val date = """(\d\d\d\d)-(\d\d)-(\d\d)""".r
+//  val dates = "Important dates in history: 2004-01-20, 1958-09-05, 2010-10-06, 2011-07-15"
+//  val firstDate = date findFirstIn dates getOrElse "No date found."
+//  val firstYear = for (m <- date findFirstMatchIn dates) yield m group 1
+//  val allYears = for (m <- date findAllMatchIn dates) yield m group 1
+//  allYears.foreach(println _)
+//  val mi = date findAllIn dates
+//  val oldies = mi filter (_ => (mi group 1).toInt < 1960) map (s => s"$s: An oldie but goodie.")
+//  oldies.foreach(println _)
+//  val redacted    = date replaceAllIn (dates, "XXXX-XX-XX")
+//  val yearsOnly   = date replaceAllIn (dates, m => m group 1)
+
 
   private val superscriptMap = Map(
     '0' -> '\u2070',
@@ -42,13 +56,23 @@ package object beautifier {
   }
 
   def snBeautify1(s: String): String = {
-    s.split("\\s").map(snBeautify _).mkString("\n")
+    s.split("""\s+""").map(snBeautify _).collect({case Some(x) => x}).mkString("\n")
   }
 
-  //  def snBeautify(printOut: Boolean): Unit = {
-  //    val s1 = SysClip.getString
-  //    val s2 = snBeautify1(s1)
-  //    if (printOut) println(s2)
-  //    SysClip.putString(s2)
-  //  }
+  def snBeautify2(s: String): String = {
+    scientificPattern.replaceAllIn(s, x => {
+      snBeautify(x.group(0)).getOrElse({
+        throw new Exception("Fail to beautify: " + x.group(0))
+      })
+    })
+  }
+
+
+  def snBeautifyClip(extract: Boolean = false, printOut: Boolean = true): Unit = {
+    val beautify: (String) => String = extract match {
+      case true => snBeautify1 _
+      case false => snBeautify2 _
+    }
+    clipboard.transform1(beautify)
+  }
 }

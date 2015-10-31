@@ -1,6 +1,7 @@
 package vu.co.kaiyin.formatting.scientificNotaion.beautifier
 
 import org.scalatest._
+import vu.co.kaiyin.clipboard
 
 class ScientificNotationSpec extends FlatSpec with Matchers {
   private val scientificPattern = """([+-]?\d+(\.\d+)?)[Ee]([+-]?\d+)""".r
@@ -35,5 +36,13 @@ class ScientificNotationSpec extends FlatSpec with Matchers {
     snBeautify("4.2e-3")  should be (Some("4.2×10⁻³"))
     snBeautify("-4.2e3")  should be (Some("-4.2×10³"))
     snBeautify("-4.2e-3")  should be (Some("-4.2×10⁻³"))
+    snBeautify1("-4.2e-3 and -4.2e3") should be ("-4.2×10⁻³\n-4.2×10³")
+    snBeautify2("-4.2e-3 and -4.2e3") should be ("-4.2×10⁻³ and -4.2×10³")
+    clipboard.putString("-4.2e-3 and -4.2e3")
+    snBeautifyClip(true)
+    clipboard.getString should be ("-4.2×10⁻³\n-4.2×10³")
+    clipboard.putString("-4.2e-3 and -4.2e3")
+    snBeautifyClip(false)
+    clipboard.getString should be ("-4.2×10⁻³ and -4.2×10³")
   }
 }

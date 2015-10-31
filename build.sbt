@@ -6,6 +6,8 @@ scalaVersion := "2.11.7"
 
 libraryDependencies += "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
 
+libraryDependencies += "org.jsoup" % "jsoup" % "1.8.3"
+
 publishTo := Some("Sonatype Snapshots Nexus" at "https://oss.sonatype.org/content/repositories/snapshots")
 
 publishMavenStyle := true
