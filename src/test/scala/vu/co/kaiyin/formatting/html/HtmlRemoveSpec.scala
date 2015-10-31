@@ -26,4 +26,10 @@ class HtmlRemoveSpec extends FlatSpec with Matchers {
     val s2 = htmlSpacePattern2.replaceAllIn(s1, """<""")
     s2
   }
+
+  val classPattern = """<(\w+)>([^<>]*)</\1>""".r.unanchored
+  """<b>test</b>""" match {
+    case classPattern(x@_*) => println(x)
+    case x => println(x)
+  }
 }
