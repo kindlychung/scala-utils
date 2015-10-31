@@ -9,7 +9,7 @@ This library contains some miscellaneous utility functions that I found useful:
 
 ## Include in `build.sbt`
 
-resolvers += "jitpack" at "https://jitpack.io"
+    resolvers += "jitpack" at "https://jitpack.io"
 
-libraryDependencies += "com.github.kindlychung" % "scala-utils" % "0.1"
+    libraryDependencies += "com.github.kindlychung" % "scala-utils" % "0.1"
 
